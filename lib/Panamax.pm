@@ -109,7 +109,7 @@ sub start {
 
         print $conn $response_json;
 
-        $conn->flush;
+        $conn->close;
     }
 
 }
