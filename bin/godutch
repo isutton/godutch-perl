@@ -45,9 +45,9 @@ die "Couldn't find $function in $module"
 
 my $available_checks = $function_ref->();
 
-my $panamax = GoDutch->new(
+my $godutch = GoDutch->new(
     socket_path      => $socket_path,
     available_checks => $available_checks,
 );
 
-$panamax->start;
+$godutch->start;
