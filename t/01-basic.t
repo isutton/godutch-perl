@@ -55,7 +55,24 @@ sub server_setup_2 {
     return ( $h, $socket_path );
 }
 
-for my $setup_function ( \&server_setup_1, \&server_setup_2 ) {
+sub server_setup_3 {
+    my $panamax_bin           = "$Bin/../bin/panamax";
+    my $socket_path           = "/tmp/panamax.basic.socket";
+    my @cmd         = (
+        $panamax_bin,
+        '-I', "$Bin/lib",
+        '--module',   'Basic',
+        '--function', 'checks',
+    );
+    $ENV{GODUTCH_SOCKET_PATH} = $socket_path;
+
+    my ( $in, $out, $err );
+    my $h = start \@cmd, \$in, \$out, \$err;
+
+    return ( $h, $socket_path );
+}
+
+for my $setup_function ( \&server_setup_1, \&server_setup_2, \&server_setup_3 ) {
 
     my ( $h, $socket_path ) = $setup_function->();
 

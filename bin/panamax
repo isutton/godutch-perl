@@ -21,7 +21,7 @@ $| = 1;
 my $function    = $ENV{PANAMAX_FUNCTION};
 my $includes    = [ split( ":", $ENV{PANAMAX_INC} // "" ) ];
 my $module      = $ENV{PANAMAX_MODULE};
-my $socket_path = $ENV{PANAMAX_SOCKET_PATH};
+my $socket_path = $ENV{PANAMAX_SOCKET_PATH} // $ENV{GODUTCH_SOCKET_PATH};
 
 GetOptions( 
     "I=s@"       => \$includes,
