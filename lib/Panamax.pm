@@ -8,10 +8,10 @@ use Panamax::JSON ();
 use IO::Socket::UNIX;
 use File::Spec;
 
-$| = 1;
 
 
 our $CHECK_DOES_NOT_EXIST_ERROR = "Check does not exist";
+
 
 
 sub new {

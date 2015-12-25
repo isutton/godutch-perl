@@ -14,6 +14,10 @@ use Getopt::Long;
 
 
 
+$| = 1;
+
+
+
 my $function    = $ENV{PANAMAX_FUNCTION};
 my $includes    = [ split( ":", $ENV{PANAMAX_INC} // "" ) ];
 my $module      = $ENV{PANAMAX_MODULE};
