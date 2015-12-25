@@ -7,7 +7,7 @@ use Test::More;
 plan tests => 1;
 
 BEGIN {
-    use_ok( 'Panamax' ) || print "Bail out!\n";
+    use_ok( 'GoDutch' ) || print "Bail out!\n";
 }
 
-diag( "Testing Panamax $Panamax::VERSION, Perl $], $^X" );
+diag( "Testing GoDutch $GoDutch::VERSION, Perl $], $^X" );

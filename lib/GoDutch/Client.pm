@@ -1,10 +1,10 @@
-package Panamax::Client;
+package GoDutch::Client;
 
 use strict;
 use warnings;
 
 use IO::Socket::UNIX;
-use Panamax::JSON;
+use GoDutch::JSON;
 
 sub new {
     my ( $class, %opts ) = @_;
@@ -29,7 +29,7 @@ sub run {
         arguments => $arguments,
     };
 
-    my $request_json = Panamax::JSON::to_json( $request );
+    my $request_json = GoDutch::JSON::to_json( $request );
 
     print $client $request_json;
 
@@ -37,7 +37,7 @@ sub run {
 
     my $response_json = <$client>;
 
-    my $response = Panamax::JSON::from_json( $response_json );
+    my $response = GoDutch::JSON::from_json( $response_json );
 
     return $response;
 }

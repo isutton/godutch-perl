@@ -1,10 +1,10 @@
-package Panamax;
+package GoDutch;
 
 use 5.006;
 use strict;
 use warnings;
 
-use Panamax::JSON ();
+use GoDutch::JSON ();
 use IO::Socket::UNIX;
 use File::Spec;
 
@@ -99,11 +99,11 @@ sub start {
 
         $self->debug( $request_json );
 
-        my $request = Panamax::JSON::from_json( $request_json );
+        my $request = GoDutch::JSON::from_json( $request_json );
 
         my $response = $self->run( $request );
 
-        my $response_json = Panamax::JSON::to_json( $response );
+        my $response_json = GoDutch::JSON::to_json( $response );
 
         $self->debug( $response_json );
 
@@ -115,4 +115,4 @@ sub start {
 }
 
 
-1; # End of Panamax
+1; # End of GoDutch

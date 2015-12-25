@@ -1,4 +1,4 @@
-package Panamax::JSON;
+package GoDutch::JSON;
 
 use strict;
 use warnings;

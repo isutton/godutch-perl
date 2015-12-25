@@ -6,7 +6,7 @@ use warnings;
 use FindBin qw( $Bin );
 use lib "$Bin/../lib";
 
-use Panamax;
+use GoDutch;
 
 use Data::Dumper;
 use File::Spec;
@@ -18,10 +18,10 @@ $| = 1;
 
 
 
-my $function    = $ENV{PANAMAX_FUNCTION};
-my $includes    = [ split( ":", $ENV{PANAMAX_INC} // "" ) ];
-my $module      = $ENV{PANAMAX_MODULE};
-my $socket_path = $ENV{PANAMAX_SOCKET_PATH} // $ENV{GODUTCH_SOCKET_PATH};
+my $function    = $ENV{GODUTCH_FUNCTION};
+my $includes    = [ split( ":", $ENV{GODUTCH_INC} // "" ) ];
+my $module      = $ENV{GODUTCH_MODULE};
+my $socket_path = $ENV{GODUTCH_SOCKET_PATH} // $ENV{GODUTCH_SOCKET_PATH};
 
 GetOptions( 
     "I=s@"       => \$includes,
@@ -45,7 +45,7 @@ die "Couldn't find $function in $module"
 
 my $available_checks = $function_ref->();
 
-my $panamax = Panamax->new(
+my $panamax = GoDutch->new(
     socket_path      => $socket_path,
     available_checks => $available_checks,
 );
