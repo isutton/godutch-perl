@@ -49,7 +49,7 @@ sub info {
 
 
 
-sub perform {
+sub run {
     my ( $self, $request ) = @_;
 
     # We return the payload without 'status' if we can't find this
@@ -93,7 +93,7 @@ sub start {
 
         my $request = Panamax::JSON::from_json( $request_json );
 
-        my $response = $self->perform( $request );
+        my $response = $self->run( $request );
 
         my $response_json = Panamax::JSON::to_json( $response );
 

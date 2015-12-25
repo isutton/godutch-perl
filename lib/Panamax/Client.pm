@@ -16,7 +16,7 @@ sub new {
     return bless $self, $class;
 }
 
-sub perform {
+sub run {
     my ( $self, $command, $arguments ) = @_;
 
     my $client = IO::Socket::UNIX->new(

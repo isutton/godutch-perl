@@ -60,7 +60,7 @@ for my $setup_function ( \&server_setup_1, \&server_setup_2 ) {
 
     eval {
         my $client   = Panamax::Client->new( socket_path => $socket_path );
-        my $response = $client->perform( "check01", [] );
+        my $response = $client->run( "check01", [] );
 
         is_deeply(
             $response,
@@ -72,7 +72,7 @@ for my $setup_function ( \&server_setup_1, \&server_setup_2 ) {
             "Successful dummy check"
         );
 
-        $response = $client->perform( "check02", [] );
+        $response = $client->run( "check02", [] );
 
         is_deeply(
             $response,
