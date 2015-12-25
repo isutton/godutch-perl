@@ -17,52 +17,80 @@ use Panamax::Client;
 
 $| = 1;
 
-my $panamax_bin = "$Bin/../bin/panamax";
-my $socket_path = "/tmp/panamax.basic.socket";
-my @cmd         = ( 
-    $panamax_bin, 
-    '-I', "$Bin/lib",
-    '--module',   'Basic',
-    '--function', 'checks',
-    '--socket',   $socket_path,
-);
-
-my ( $in, $out, $err );
-my $h = start \@cmd, \$in, \$out, \$err;
-
-sleep 1;
-
-eval {
-    my $client   = Panamax::Client->new( socket_path => $socket_path );
-    my $response = $client->perform( "check01", [] );
-
-    is_deeply( 
-        $response,
-        { 
-            name => 'check01',
-            status => 0,
-            stdout => [],
-        },
-        "Successful dummy check"
+sub server_setup_1 {
+    my $panamax_bin = "$Bin/../bin/panamax";
+    my $socket_path = "/tmp/panamax.basic.socket";
+    my @cmd         = (
+        $panamax_bin,
+        '-I', "$Bin/lib",
+        '--module',   'Basic',
+        '--function', 'checks',
+        '--socket',   $socket_path,
     );
 
-    $response = $client->perform( "check02", [] );
+    my ( $in, $out, $err );
+    my $h = start \@cmd, \$in, \$out, \$err;
 
-    is_deeply(
-        $response,
-        {
-            name  => 'check02',
-            error => $Panamax::CHECK_DOES_NOT_EXIST_ERROR,
-        },
-        "Not existing check should return an error"
+    return ( $h, $socket_path );
+}
+
+sub server_setup_2 {
+    my $panamax_bin           = "$Bin/../bin/panamax";
+    my $socket_path           = "/tmp/panamax.basic.socket";
+    $ENV{PANAMAX_INC}         = "$Bin/lib";
+    $ENV{PANAMAX_MODULE}      = 'Basic';
+    $ENV{PANAMAX_FUNCTION}    = 'checks';
+    $ENV{PANAMAX_SOCKET_PATH} = $socket_path;
+
+    my @cmd  = (
+        $panamax_bin,
     );
 
-    1;
-} or do {
-    fail("Client couldn't open connection to $socket_path");
-};
+    my ( $in, $out, $err );
+    my $h = start \@cmd, \$in, \$out, \$err;
 
-signal $h, 'INT';
+    return ( $h, $socket_path );
+}
 
-unlink $socket_path 
-    if -e $socket_path;
+for my $setup_function ( \&server_setup_1, \&server_setup_2 ) {
+
+    my ( $h, $socket_path ) = $setup_function->();
+
+    sleep 1;
+
+    eval {
+        my $client   = Panamax::Client->new( socket_path => $socket_path );
+        my $response = $client->perform( "check01", [] );
+
+        is_deeply(
+            $response,
+            {
+                name => 'check01',
+                status => 0,
+                stdout => [],
+            },
+            "Successful dummy check"
+        );
+
+        $response = $client->perform( "check02", [] );
+
+        is_deeply(
+            $response,
+            {
+                name  => 'check02',
+                error => $Panamax::CHECK_DOES_NOT_EXIST_ERROR,
+            },
+            "Not existing check should return an error"
+        );
+
+        1;
+    } or do {
+        fail("Client couldn't open connection to $socket_path");
+    };
+
+    signal $h, 'INT';
+
+    unlink $socket_path
+        if -e $socket_path;
+
+}
