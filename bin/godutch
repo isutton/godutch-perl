@@ -24,10 +24,10 @@ my $module      = $ENV{GODUTCH_MODULE};
 my $socket_path = $ENV{GODUTCH_SOCKET_PATH} // $ENV{GODUTCH_SOCKET_PATH};
 
 GetOptions( 
-    "I=s@"       => \$includes,
-    "function=s" => \$function,
-    "module=s"   => \$module,
-    "socket|s=s" => \$socket_path
+    "include|I=s@" => \$includes,
+    "function=s"   => \$function,
+    "module=s"     => \$module,
+    "socket|s=s"   => \$socket_path
 ) or die "Error in command line arguments\n";
 
 
