@@ -52,6 +52,14 @@ sub info {
 sub run {
     my ( $self, $request ) = @_;
 
+    if ( $request->{command} eq '__list_check_methods' ) {
+        return {
+            name   => $request->{command},
+            status => 0,
+            stdout => [ keys %{ $self->{available_checks} } ],
+        };
+    }
+
     # We return the payload without 'status' if we can't find this
     # check in our available checks.
     if ( !exists $self->{available_checks}{ $request->{command} } ) {

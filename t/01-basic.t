@@ -15,6 +15,9 @@ use JSON;
 use Panamax;
 use Panamax::Client;
 
+use lib "$Bin/lib";
+use Basic;
+
 $| = 1;
 
 sub server_setup_1 {
@@ -81,6 +84,19 @@ for my $setup_function ( \&server_setup_1, \&server_setup_2 ) {
                 error => $Panamax::CHECK_DOES_NOT_EXIST_ERROR,
             },
             "Not existing check should return an error"
+        );
+
+        my $check_name = '__list_check_methods';
+        $response = $client->run( $check_name, [] );
+
+        is_deeply(
+            $response,
+            {
+                name   => $check_name,
+                status => 0,
+                stdout => [ keys %{Basic::checks()} ],
+            },
+            $check_name
         );
 
         1;
