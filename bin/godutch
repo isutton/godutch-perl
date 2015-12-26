@@ -39,6 +39,9 @@ die "--function is mandatory"
 die "Socket path, either via GODUTCH_SOCKET_PATH or -s is mandatory"
     if !$socket_path;
 
+unlink $socket_path
+    if -e $socket_path;
+
 push @INC, File::Spec->rel2abs($_)
     for @$includes;
 
