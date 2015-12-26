@@ -18,9 +18,8 @@ WriteMakefile(
         'Test::More' => 0,
     },
     PREREQ_PM => {
-        'IPC::Run' => 0,
-        #'ABC'              => 1.6,
-        #'Foo::Bar::Module' => 5.0401,
+        'IPC::Run'         => 0,
+        'AnyEvent::Socket' => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'GoDutch-*' },
