@@ -58,4 +58,13 @@ my $godutch = GoDutch->new(
     available_checks => $available_checks,
 );
 
+$SIG{INT} = sub {
+    unlink $socket_path if -e $socket_path;
+    exit(0);
+};
+
+$SIG{__DIE__} = sub {
+    unlink $socket_path if -e $socket_path;
+};
+
 $godutch->start;

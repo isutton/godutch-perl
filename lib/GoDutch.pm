@@ -90,12 +90,6 @@ sub start {
         Listen => 1,
     ) or die $!;
 
-    $SIG{INT} = sub {
-        $self->info( "SIGINT: closing socket and leaving" );
-        $server->close;
-        unlink $self->{socket_path};
-        exit(0);
-    };
 
     $self->info( "Listening on %s", $self->{socket_path} );
 
