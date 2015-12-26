@@ -4,9 +4,11 @@ use 5.006;
 use strict;
 use warnings;
 
-use GoDutch::JSON ();
+use AnyEvent::Socket;
 use IO::Socket::UNIX;
 use File::Spec;
+
+use GoDutch::JSON ();
 
 
 
@@ -84,18 +86,12 @@ sub run {
 sub start {
     my ( $self ) = @_;
 
-    my $server = IO::Socket::UNIX->new(
-        Type   => SOCK_STREAM(),
-        Local  => $self->{socket_path},
-        Listen => 1,
-    ) or die $!;
-
-
     $self->info( "Listening on %s", $self->{socket_path} );
 
-    while ( my $conn = $server->accept() ) {
+    my $handler = tcp_server "unix/", $self->{socket_path}, sub {
+        my ( $fh ) = @_;
 
-        chomp( my $request_json = <$conn> );
+        chomp( my $request_json = <$fh> );
 
         $self->debug( $request_json );
 
@@ -107,12 +103,12 @@ sub start {
 
         $self->debug( $response_json );
 
-        print $conn $response_json;
+        print $fh $response_json;
+    };
 
-        $conn->close;
-    }
-
+    AE::cv->recv;
 }
+
 
 
 1; # End of GoDutch
