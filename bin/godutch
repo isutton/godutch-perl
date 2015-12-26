@@ -30,6 +30,14 @@ GetOptions(
     "socket|s=s"   => \$socket_path
 ) or die "Error in command line arguments\n";
 
+die "--module is mandatory"
+    if !$module;
+
+die "--function is mandatory"
+    if !$function;
+
+die "Socket path, either via GODUTCH_SOCKET_PATH or -s is mandatory"
+    if !$socket_path;
 
 push @INC, File::Spec->rel2abs($_)
     for @$includes;
