@@ -10,6 +10,11 @@ use File::Spec;
 
 
 
+sub SUCCESS  { 0 }
+sub WARNING  { 1 }
+sub CRITICAL { 2 }
+sub UNKNOWN  { 3 }
+
 our $CHECK_DOES_NOT_EXIST_ERROR = "Check does not exist";
 
 
@@ -64,8 +69,9 @@ sub run {
     # check in our available checks.
     if ( !exists $self->{available_checks}{ $request->{command} } ) {
         return { 
-            name  => $request->{command}, 
-            error => $CHECK_DOES_NOT_EXIST_ERROR,
+            name   => $request->{command},
+            status => UNKNOWN(),
+            error  => $CHECK_DOES_NOT_EXIST_ERROR,
         };
     }
 

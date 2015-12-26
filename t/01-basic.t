@@ -97,8 +97,9 @@ for my $setup_function ( \&server_setup_1, \&server_setup_2, \&server_setup_3 ) 
         is_deeply(
             $response,
             {
-                name  => 'check02',
-                error => $GoDutch::CHECK_DOES_NOT_EXIST_ERROR,
+                name   => 'check02',
+                status => GoDutch::UNKNOWN(),
+                error  => $GoDutch::CHECK_DOES_NOT_EXIST_ERROR,
             },
             "Not existing check should return an error"
         );
