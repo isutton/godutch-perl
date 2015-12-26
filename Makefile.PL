@@ -6,8 +6,8 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME             => 'Panamax',
     AUTHOR           => q{Igor Sutton <izut@cpan.org>},
-    VERSION_FROM     => 'lib/Panamax.pm',
-    ABSTRACT_FROM    => 'lib/Panamax.pm',
+    VERSION_FROM     => 'lib/GoDutch.pm',
+    ABSTRACT_FROM    => 'lib/GoDutch.pm',
     LICENSE          => 'artistic_2',
     PL_FILES         => {},
     MIN_PERL_VERSION => 5.006,
@@ -23,5 +23,5 @@ WriteMakefile(
         #'Foo::Bar::Module' => 5.0401,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean => { FILES => 'Panamax-*' },
+    clean => { FILES => 'GoDutch-*' },
 );
