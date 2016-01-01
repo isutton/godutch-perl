@@ -6,6 +6,7 @@ use warnings;
 use FindBin qw( $Bin );
 use lib "$Bin/../lib";
 
+use Config;
 use Data::Dumper;
 use IO::Socket::UNIX;
 use IPC::Run qw( start signal );
@@ -20,12 +21,17 @@ use Basic;
 
 $| = 1;
 
+my $perl_path    = $Config{perlpath};
+my $socket_path  = $ENV{HOME} . "/godutch.basic.socket";
+my $include_path = "$Bin/lib";
+my $godutch_path = "$Bin/../bin/godutch";
+
+
 sub server_setup_1 {
-    my $godutch_bin = "$Bin/../bin/godutch";
-    my $socket_path = "/tmp/godutch.basic.socket";
-    my @cmd         = (
-        $godutch_bin,
-        '-I', "$Bin/lib",
+    my @cmd = (
+        $perl_path,
+        $godutch_path,
+        '-I', $include_path,
         '--module',   'Basic',
         '--function', 'checks',
         '--socket',   $socket_path,
@@ -34,33 +40,32 @@ sub server_setup_1 {
     my ( $in, $out, $err );
     my $h = start \@cmd, \$in, \$out, \$err;
 
-    return ( $h, $socket_path );
+
+    return ( $h );
 }
 
 sub server_setup_2 {
-    my $godutch_bin           = "$Bin/../bin/godutch";
-    my $socket_path           = "/tmp/godutch.basic.socket";
-    $ENV{GODUTCH_INC}         = "$Bin/lib";
-    $ENV{GODUTCH_MODULE}      = 'Basic';
     $ENV{GODUTCH_FUNCTION}    = 'checks';
+    $ENV{GODUTCH_INC}         = $include_path;
+    $ENV{GODUTCH_MODULE}      = 'Basic';
     $ENV{GODUTCH_SOCKET_PATH} = $socket_path;
 
     my @cmd  = (
-        $godutch_bin,
+        $perl_path,
+        $godutch_path,
     );
 
     my ( $in, $out, $err );
     my $h = start \@cmd, \$in, \$out, \$err;
 
-    return ( $h, $socket_path );
+    return ( $h );
 }
 
 sub server_setup_3 {
-    my $godutch_bin           = "$Bin/../bin/godutch";
-    my $socket_path           = "/tmp/godutch.basic.socket";
     my @cmd         = (
-        $godutch_bin,
-        '-I', "$Bin/lib",
+        $perl_path,
+        $godutch_path,
+        '-I',          $include_path,
         '--module',   'Basic',
         '--function', 'checks',
     );
@@ -69,12 +74,12 @@ sub server_setup_3 {
     my ( $in, $out, $err );
     my $h = start \@cmd, \$in, \$out, \$err;
 
-    return ( $h, $socket_path );
+    return ( $h );
 }
 
 for my $setup_function ( \&server_setup_1, \&server_setup_2, \&server_setup_3 ) {
 
-    my ( $h, $socket_path ) = $setup_function->();
+    my ( $h ) = $setup_function->();
 
     sleep 1;
 

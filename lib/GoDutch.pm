@@ -4,6 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 
+use Data::Dumper;
 use AnyEvent::Socket;
 use IO::Socket::UNIX;
 use File::Spec;
@@ -90,6 +91,8 @@ sub start {
 
     my $handler = tcp_server "unix/", $self->{socket_path}, sub {
         my ( $fh ) = @_;
+
+        Dumper($fh);
 
         chomp( my $request_json = <$fh> );
 
